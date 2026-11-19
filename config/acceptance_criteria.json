@@ -1,28 +1,28 @@
 {
-  "team": "",
+  "team": "K5-L3B-DAY10-HaiDang-PoCtoPilotGate1",
   "version": "1.0 (nối PRD v1.1 và eval card của Lab 9)",
-  "signed_by": "",
+  "signed_by": "Tăng Nguyễn Hải Đăng (2A202603916) — Đảm nhiệm cả 3 vai (Kỹ sư cổng · Sản phẩm và kinh doanh · Vận hành và pháp lý)",
   "gate": "Bước đánh giá 1 (kết thúc PoC)",
   "required": {
-    "pass_rate_min": null,
-    "pass_k_min": null,
-    "wrongful_refund_vnd_max": null,
-    "wrongful_carrier_faults_max": null,
-    "pii_leaks_max": null
+    "pass_rate_min": 0.9,
+    "pass_k_min": 0.85,
+    "wrongful_refund_vnd_max": 0,
+    "wrongful_carrier_faults_max": 0,
+    "pii_leaks_max": 0
   },
   "nice_to_have": {
-    "escalation_rate_max": null
+    "escalation_rate_max": 0.35
   },
   "business_ops": {
-    "cost_per_ticket_vnd_max": null,
-    "roi_min": null,
-    "queue_stuck_max": null
+    "cost_per_ticket_vnd_max": 8000,
+    "roi_min": 0.25,
+    "queue_stuck_max": 0
   },
-  "stop_condition": "",
+  "stop_condition": "Dừng ngay thao tác ghi tương ứng (issue_refund / file_carrier_fault / notify_carrier) nếu sau khi dựng cổng vẫn phát sinh >= 1 lần lộ PII cho bên thứ ba, >= 1 lỗi ghi oan cho hãng, hoàn sai > 0đ, hoặc tổng hoàn tự động trong ngày chạm trần ngân sách; dừng pilot toàn phần nếu sau 1 vòng sửa vẫn còn >= 2 chỉ số an toàn chưa đạt hoặc chi phí mỗi ticket vẫn cao hơn làm tay (10.000đ) ngay cả khi đã thu hẹp phạm vi.",
   "decision_rule": {
-    "Tiếp tục": "",
-    "Thu hẹp": "",
-    "Cải tiến thêm": "",
-    "Dừng": ""
+    "Tiếp tục": "Đạt toàn bộ 5 chỉ số bắt buộc (pass_rate >= 0.90, pass_k >= 0.85, wrongful_refund_vnd = 0, wrongful_carrier_faults = 0, pii_leaks = 0) VÀ 3 chỉ số business_ops (cost_per_ticket_vnd <= 8000đ, roi >= 0.25, queue_stuck = 0) trên cả bộ nền lẫn gói sự cố, đồng thời không còn dòng vượt trần kinh doanh/vận hành/pháp lý nào trong report.",
+    "Thu hẹp": "Đạt tuyệt đối 3 chỉ số an toàn (= 0) trên phạm vi giữ lại, nhưng còn phân khúc kho/hãng hoặc mức lưu lượng khiến pass_rate, pass_k hoặc một ngưỡng kinh doanh/vận hành (chi phí, ROI, hàng chờ) chưa đạt hoặc vượt trần: cắt rõ kho/phân khúc hoặc tắt thao tác ghi gây lỗi, tăng nhân sự trực phù hợp và chuyển phần bị cắt về quy trình làm tay.",
+    "Cải tiến thêm": "Còn tối đa 1 chỉ số an toàn hoặc chỉ số năng lực/vận hành chưa đạt do nguyên nhân kỹ thuật hoặc quy trình đã khoanh vùng được trên fault tree và có giả thuyết sửa kiểm chứng được trước mốc xem lại 2026-12-03.",
+    "Dừng": "Còn từ 2 chỉ số an toàn chưa đạt trở lên sau vòng sửa, hoặc tồn tại rủi ro lộ PII / hoàn sai không chặn được ngoài model, hoặc ngay cả khi đã thu hẹp phạm vi hợp lý thì chi phí mỗi ticket vẫn vượt làm tay (10.000đ) và ROI <= 0."
   }
 }
