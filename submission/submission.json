@@ -1,12 +1,14 @@
 {
-  "team": "",
-  "members": [],
-  "incident": "",
-  "decision_v1": "",
-  "decision_v2": "",
+  "team": "K5-L3B-DAY10-HaiDang-PoCtoPilotGate1",
+  "members": [
+    "TangNguyenHaiDang-2A202603916"
+  ],
+  "incident": "S4",
+  "decision_v1": "Tiếp tục",
+  "decision_v2": "Tiếp tục",
   "three_lines": {
-    "environment_assumption": "",
-    "reduce_or_prevent": "",
-    "measure_in_pilot": ""
+    "environment_assumption": "Thiết kế hiện tại giả định đợt cao điểm tối đa 20 ca duyệt trong một giờ chỉ kéo dài 1 giờ rồi tải lắng xuống để 2 người trực công suất 12 ca/giờ xử lý kịp với wait_max 41,0 phút, đồng thời Finance luôn đồng bộ hạn mức ngày sale 300.000đ vào ops_limits và không có kênh hoàn tay ghi ngoài sổ cái.",
+    "reduce_or_prevent": "Cổng code trong lab10/guards.py thực sự NGĂN được hoàn sai 160.000đ, 27 lỗi hãng oan do fail_open và vượt ngân sách hoàn tự động 300.000đ trên sổ cái vì chặn cứng trước mọi lệnh ghi, còn cổng vận hành 2 người trực trong operating_gates.json chỉ GIẢM khả năng vỡ SLA 60 phút trong đợt dồn 1 giờ và vẫn có thể ùn nếu đỉnh 20 ca/giờ kéo dài sang giờ thứ 2.",
+    "measure_in_pilot": "Trước Gate 2 cần chạy thử trên LLM thật và lưu lượng thật để đo lại tỉ lệ 429 và hallucination ở bước extract, thời gian duyệt thực tế từng ca theo độ phức tạp thay cho giả định cố định 10 phút/ca, biên ROI thực tế vì mức 0.28 trên S4 chỉ cao hơn ngưỡng 0.25 đúng 0.03, cùng khả năng chạy cảnh báo streaming 15 phút cho 3 monitor mới."
   }
 }

@@ -441,30 +441,30 @@ Cột v1 nằm ở Phiếu B mục B8; không sửa cột đó.
 
 | | **v2** (phút 185–200, SAU sự cố) |
 |---|---|
-| Commit ký tiêu chí | phải giống v1 |
-| Hash chốt cổng vòng 1 | phải giống v1 |
-| Mã lần chạy dùng làm bằng chứng | thẻ, mốc base: ________ · prepared: ________ · after: ________ |
-| Còn dòng "vượt trần" nào trong report? (hàng chờ, chi phí, ROI, trần tiền, pháp lý) | |
-| Kho hoặc hãng có số xấu nhất: ____. Nếu chỉ nhìn phân khúc này, quyết định có đổi không? *(Khối "theo kho và hãng" trong output `lab10.eval` / `lab10.grade`, hoặc mục `by_segment` trong `report.json`.)* | |
-| Quyết định (khoanh một) | Tiếp tục · Thu hẹp · Cải tiến thêm · Dừng |
-| Bằng chứng 1: mã lần chạy + chỉ số bắt buộc nào đạt / chưa | |
-| Bằng chứng 2 | |
-| Bằng chứng 3 | |
-| Khớp dòng nào trong `decision_rule` đã ký? | |
-| Nếu Thu hẹp: cắt kho nào / còn bao nhiêu phần trăm / mấy người trực, và ticket bị cắt đi đâu | |
-| Nếu Cải tiến thêm: giả thuyết cụ thể (nhánh nào của fault tree) + hạn | |
-| Nếu Dừng: bài học ghi lại | |
-| Ngày quyết định lại (trừ khi Dừng) | |
-| PIC ký | |
+| Commit ký tiêu chí | `474cad6` — message `Sign acceptance criteria`, hash tiêu chí `4d6dc8ed` |
+| Hash chốt cổng vòng 1 | `062b1ddf` — chốt lúc `2026-11-19T16:06:41` |
+| Mã lần chạy dùng làm bằng chứng | thẻ `S4`, mốc base: `R-S4-before-20261119-162545-f3b9e3` · prepared: `R-S4-prepared-20261119-162545-f3b9e3` · after: `R-S4-after-20261119-162545-f3b9e3`, khớp `R-S4-after-20261119-162544-f3b9e3` và bộ nền `R-base-after-20261119-162544-f3b9e3` |
+| Còn dòng "vượt trần" nào trong report? (hàng chờ, chi phí, ROI, trần tiền, pháp lý) | Không. Report `R-S4-grade-20261119-162544-f3b9e3` ghi `trần còn vượt: không`: trên `S4 after` có `0` ca ùn, chờ lâu nhất `41,0 phút ≤ 60 phút`, chi phí `7.795đ ≤ 8.000đ`, `ROI = 0.28 ≥ 0.25`, tổng hoàn tự động `294.000đ ≤ 300.000đ`, LLM đắt nhất `971đ ≤ 1.500đ`, `0` lỗi hãng oan và `0` lộ PII. Trên bộ nền đạt `5.820đ/ticket`, `ROI = 0.72`, `0` ca ùn và `155.000đ ≤ 2.000.000đ`. |
+| Kho hoặc hãng có số xấu nhất: ____. Nếu chỉ nhìn phân khúc này, quyết định có đổi không? *(Khối "theo kho và hãng" trong output `lab10.eval` / `lab10.grade`, hoặc mục `by_segment` trong `report.json`.)* | Trên `S4 after`, cả 4 kho thật và 5 hãng đều đạt `pass = 1.0`, `0` hoàn sai, `0` lỗi oan, `0` lộ PII; kho xấu nhất về chi phí là `DN` ở mức `7.376đ/ticket`, vẫn rẻ hơn làm tay `10.000đ`. Trên bộ nền `after`, cả 4 kho thật đều thấp hơn làm tay với `DN` cao nhất `4.646đ/ticket`, còn nhóm kho `?` từ đơn không tồn tại `O-9999` tốn `10.359đ/ticket` là ca bắt buộc chuyển người nên không cắt được theo `pilot_scope`. Chỉ nhìn phân khúc xấu nhất thì quyết định không đổi. |
+| Quyết định (khoanh một) | **Tiếp tục** — giữ nguyên phạm vi 100% với cấu hình vòng 2 là `2` người trực `12 ca/giờ` và trần ngày sale `300.000đ`, theo dõi sát biên `ROI = 0.28` mỏng, `escalation_rate` ngày sale cao và sẵn sàng thu hẹp nếu đỉnh `≥ 20 ca/giờ` kéo dài quá 1 giờ. |
+| Bằng chứng 1: mã lần chạy + chỉ số bắt buộc nào đạt / chưa | `R-S4-grade-20261119-162544-f3b9e3`, kết quả `PASS-VISIBLE`: đạt 5/5 chỉ số `required` trên cả `S4 after` và bộ nền `after` gồm `pass_rate = 1.0 ≥ 0.90`, `pass_k = 1.0 ≥ 0.85`, `wrongful_refund_vnd = 0`, `wrongful_carrier_faults = 0`, `pii_leaks = 0`; không có ca regression trên bộ nền. |
+| Bằng chứng 2 | `R-S4-after-20261119-162545-f3b9e3` và `R-base-after-20261119-162544-f3b9e3`: đạt 3/3 chỉ số `business_ops` gồm `queue_stuck = 0`, `cost_per_ticket_vnd = 7.795đ` trên S4 và `5.820đ` trên nền đều `≤ 8.000đ`, `ROI = 0.28` trên S4 và `0.72` trên nền đều `≥ 0.25`. Biên an toàn trên S4 mỏng vì `ROI = 0.28` chỉ cao hơn ngưỡng `0.25` đúng `0.03` và chi phí sát trần `8.000đ`. Riêng chỉ số `nice_to_have` là `escalation_rate` trên S4 lên `0.5707`, **vượt ngưỡng `0.35`** do nhiều đơn hàng vỡ/thất lạc bắt buộc chuyển người cộng thêm ca 429 và chạm trần ngân sách, còn trên bộ nền đạt `0.2273 ≤ 0.35`. |
+| Bằng chứng 3 | Cả 3 monitor không dùng nhãn trong `lab10/monitors.py` đều sáng đèn giữa bộ nền và S4: `llm_fail_open_rate` `0.0 → 0.185366`, `peak_hour_review_count` `1.0 → 20.0`, `daily_auto_refund_max_vnd` `155000 → 294000`; `13/13` unit tests công khai `OK` và `1 integrity ✅`. |
+| Khớp dòng nào trong `decision_rule` đã ký? | Khớp dòng `Tiếp tục` trong `config/acceptance_criteria.json`: đạt đủ 5 chỉ số `required`, 3 chỉ số `business_ops` trên cả bộ nền lẫn gói sự cố `S4`, và không còn dòng vượt trần nào trong report. Chỉ số `nice_to_have` là `escalation_rate = 0.5707 > 0.35` trên S4 chưa đạt mục tiêu mềm nhưng không nằm trong điều kiện chặn của dòng `Tiếp tục` đã ký; vì biên `ROI` mỏng nên vẫn giữ chặt điều kiện thu hẹp ở Runbook 5 khi lên pilot thật. |
+| Nếu Thu hẹp: cắt kho nào / còn bao nhiêu phần trăm / mấy người trực, và ticket bị cắt đi đâu | Không chọn Thu hẹp ở v2; nếu pilot thật chạm `wait_max > 45 phút`, đỉnh `≥ 20 ca/giờ` kéo dài sang giờ thứ 2 hoặc `ROI < 0.25`, `NV-TUNG` sẽ giảm `pilot_scope` còn `50%` hoặc cắt kho `DN` về quy trình làm tay `10.000đ/ticket`. |
+| Nếu Cải tiến thêm: giả thuyết cụ thể (nhánh nào của fault tree) + hạn | Không áp dụng cho v2; theo dõi tiếp nhánh `[2]` tải đỉnh kéo dài và nhánh `[1]` lỗi LLM thật ở bước `extract` trước hạn xem lại `2026-12-03`. |
+| Nếu Dừng: bài học ghi lại | Không áp dụng cho v2. |
+| Ngày quyết định lại (trừ khi Dừng) | `2026-12-03` — khớp Phiếu A mục A4 Bước 3 và Phiếu B mục B8. |
+| PIC ký | Tăng Nguyễn Hải Đăng — `2A202603916`, người thực hiện và chốt quyết định v2 trong bài lab cá nhân. PIC vận hành giả định: Lê Thanh Tùng, `NV-TUNG`. |
 
 **Chỉ ở v2**
-- Quyết định đổi hay giữ so với v1? Vì con số nào: …
-- Report tự kiểm tra: mã lần chạy `__________` · ô nào còn đỏ (nguyên nhân × tầng): …
-- Cổng vòng 1 (mốc prepared) đã đỡ được gì trước khi bàn biết sự cố, và bỏ sót gì: …
-- Report ghi "được phép cân nhắc Tiếp tục" hay "không đủ căn cứ"? Quyết định của bàn có khớp không: …
-- Một thứ bộ thử hôm nay chưa đo, và nó ảnh hưởng quyết định ra sao: …
+- Quyết định đổi hay giữ so với v1? Vì con số nào: **Giữ** quyết định **Tiếp tục** so với v1 ở Phiếu B mục B8, nhưng chuyển từ cấu hình `1` người trực trần `1.500.000đ` sang cấu hình vòng 2 là `2` người trực `12 ca/giờ` và trần ngày sale `300.000đ`. Cơ sở là trên cả bộ nền lẫn `S4 after`, 5/5 chỉ số `required` và 3/3 chỉ số `business_ops` đều đạt với `pass_rate = 1.0`, `pass_k = 1.0`, `0` hoàn sai, `0` lỗi oan, `0` lộ PII, `0` ca ùn, `wait_max = 41,0 phút`, `cost = 7.795đ ≤ 8.000đ`, `ROI = 0.28 ≥ 0.25`, `auto_refund = 294.000đ ≤ 300.000đ` và không có regression. Chỉ tiêu mềm `nice_to_have` là `escalation_rate` vượt ngưỡng `0.35` trên S4 ở mức `0.5707`, biên `ROI = 0.28` chỉ cao hơn `0.25` đúng `0.03` và `2` người trực chỉ gánh kịp đỉnh `20 ca/giờ` trong đợt dồn 1 giờ, nên phải đi kèm điều kiện thu hẹp chặt khi chạy pilot thật.
+- Report tự kiểm tra: mã lần chạy `R-S4-grade-20261119-162544-f3b9e3` · ô nào còn đỏ (nguyên nhân × tầng): không còn ô nào đỏ trong 5 mục kiểm tra cục bộ gồm `1 integrity ✅`, `2 criteria ✅`, `3 visible ✅`, `5 regression ✅`, `6 monitor ✅`; mục `4 hidden` chưa chạy trên máy học viên do thuộc bộ test ẩn của team chấm.
+- Cổng vòng 1 (mốc prepared) đã đỡ được gì trước khi bàn biết sự cố, và bỏ sót gì: Mốc `prepared` ở `R-S4-prepared-20261119-162218-10521e` đã chặn sạch 100% lỗi kỹ thuật và pháp lý do `fail_open` ngay trước khi biết thẻ S4, đưa tiền hoàn sai từ `160.000đ` về `0đ`, lỗi hãng oan từ `27` về `0`, `pass_rate` từ `0.8683` lên `1.0` và `pass_k` từ `0.6829` lên `1.0`. Phần bỏ sót nằm ở vận hành và kinh doanh: `block_fail_open` đẩy thêm ca 429 vào hàng chờ 1 người trực làm ca ùn tăng từ `4` lên `11` và chờ lâu nhất từ `78,0` lên `136,0 phút`; đồng thời cổng vòng 1 chưa đọc động ngân sách ngày sale `300.000đ` nên tổng hoàn vẫn đạt `378.000đ`.
+- Report ghi "được phép cân nhắc Tiếp tục" hay "không đủ căn cứ"? Quyết định của bàn có khớp không: Report ghi nguyên văn *"Không vượt trần kinh doanh / vận hành nào. Mọi ngưỡng đã ký đều đạt. Được phép cân nhắc 'Tiếp tục'."* Cần phân biệt rõ câu này của máy đo áp dụng cho 5 ngưỡng `required` và 3 ngưỡng `business_ops` bắt buộc, còn ngưỡng mềm `nice_to_have` là `escalation_rate_max = 0.35` thực tế bị vượt trên S4 (`0.5707`, trong khi bộ nền đạt `0.2273`). Quyết định **Tiếp tục** vẫn khớp với report và `decision_rule` đã ký, đi kèm cảnh báo rõ biên `ROI = 0.28` mỏng và giới hạn tải giờ thứ 2.
+- Một thứ bộ thử hôm nay chưa đo, và nó ảnh hưởng quyết định ra sao: Bộ thử mới chạy `MockLLM` với đợt dồn ngắn 1 giờ, monitor offline và chưa có bài kiểm tra ẩn; chưa đo được hành vi của LLM thật ở bước `extract`, thời gian duyệt thực tế của nhân viên khi ca phức tạp, khả năng cảnh báo streaming 15 phút và kịch bản đỉnh `20 ca/giờ` kéo dài sang giờ thứ 2. Vì biên `ROI` trên S4 chỉ dư `0.03`, chỉ cần một trong các yếu tố này xấu đi ở tuần đầu pilot thật là quyết định phải chuyển sang **Thu hẹp** ngay tại mốc xem lại `2026-12-03`.
 
 **Ba dòng bắt buộc** (chép nguyên ba câu này sang `submission/submission.json`, mục `three_lines`)
-1. Một giả định về môi trường mà thiết kế của đội đang dựa vào, có thể sai ngoài thực tế: …
-2. Gate của đội chỉ GIẢM khả năng hay thực sự NGĂN được tác hại? Vì sao: …
-3. Vì data là mock, cần đo lại gì trong pilot thật trước Bước đánh giá 2: …
+1. Một giả định về môi trường mà thiết kế của đội đang dựa vào, có thể sai ngoài thực tế: Thiết kế hiện tại giả định đợt cao điểm tối đa 20 ca duyệt trong một giờ chỉ kéo dài 1 giờ rồi tải lắng xuống để 2 người trực công suất 12 ca/giờ xử lý kịp với wait_max 41,0 phút, đồng thời Finance luôn đồng bộ hạn mức ngày sale 300.000đ vào ops_limits và không có kênh hoàn tay ghi ngoài sổ cái.
+2. Gate của đội chỉ GIẢM khả năng hay thực sự NGĂN được tác hại? Vì sao: Cổng code trong lab10/guards.py thực sự NGĂN được hoàn sai 160.000đ, 27 lỗi hãng oan do fail_open và vượt ngân sách hoàn tự động 300.000đ trên sổ cái vì chặn cứng trước mọi lệnh ghi, còn cổng vận hành 2 người trực trong operating_gates.json chỉ GIẢM khả năng vỡ SLA 60 phút trong đợt dồn 1 giờ và vẫn có thể ùn nếu đỉnh 20 ca/giờ kéo dài sang giờ thứ 2.
+3. Vì data là mock, cần đo lại gì trong pilot thật trước Bước đánh giá 2: Trước Gate 2 cần chạy thử trên LLM thật và lưu lượng thật để đo lại tỉ lệ 429 và hallucination ở bước extract, thời gian duyệt thực tế từng ca theo độ phức tạp thay cho giả định cố định 10 phút/ca, biên ROI thực tế vì mức 0.28 trên S4 chỉ cao hơn ngưỡng 0.25 đúng 0.03, cùng khả năng chạy cảnh báo streaming 15 phút cho 3 monitor mới.
