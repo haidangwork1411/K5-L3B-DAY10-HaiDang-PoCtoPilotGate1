@@ -192,7 +192,8 @@ def write_gate(ctx, action):
                         amount_vnd=final_amount, auto_limit_vnd=auto_limit)
                 return Verdict.escalate("khoản hoàn vượt hạn mức tự động và thiếu phê duyệt hợp lệ cho đúng đơn/ticket")
         elif not has_valid_approval:
-            cust_cap = ctx.tools.ops_limits().get("max_auto_refund_per_customer_per_day_vnd")
+            limits = ctx.tools.ops_limits()
+            cust_cap = limits.get("max_auto_refund_per_customer_per_day_vnd")
             if cust_cap is not None:
                 cust_spent = sum(
                     r["amount_vnd"] for r in ctx.tools.ledger_rows(customer_id=order.get("customer_id"))
@@ -202,6 +203,20 @@ def write_gate(ctx, action):
                     ctx.log("block_customer_daily_cap", customer_id=order.get("customer_id"),
                             spent=cust_spent, asked=final_amount, cap=cust_cap)
                     return Verdict.escalate("vượt trần hoàn tự động theo khách trong ngày: chuyển người duyệt")
+
+            finance_budget = limits.get("daily_auto_refund_budget_vnd")
+            team_cap = (ctx.gates or {}).get("business", {}).get("daily_refund_cap_vnd")
+            valid_caps = [
+                c for c in (finance_budget, team_cap)
+                if isinstance(c, (int, float)) and not isinstance(c, bool)
+            ]
+            if valid_caps:
+                eff_cap = min(valid_caps)
+                today_auto = ctx.tools.auto_refund_today_vnd()
+                if today_auto + final_amount > eff_cap:
+                    ctx.log("block_daily_refund_budget", today_auto=today_auto, asked=final_amount,
+                            effective_cap=eff_cap, finance_budget=finance_budget, team_cap=team_cap)
+                    return Verdict.escalate("vượt trần hoặc ngân sách hoàn tự động trong ngày: chuyển người duyệt")
 
         if changes:
             return Verdict.modify("điều chỉnh lệnh hoàn khớp nguồn sự thật DB và trạng thái phê duyệt", **changes)

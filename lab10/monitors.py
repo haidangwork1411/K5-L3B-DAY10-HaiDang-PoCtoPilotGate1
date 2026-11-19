@@ -19,7 +19,58 @@ def escalation_rate(trials):
     return sum(t["status"] == "escalated" for t in trials) / max(1, len(trials))
 
 
+def llm_fail_open_rate(trials):
+    """Tỉ lệ trial rơi vào chế độ fallback (llm_fallback) khi nhà cung cấp LLM gặp lỗi 429."""
+    if not trials:
+        return 0.0
+    hits = sum(
+        any(e.get("type") == "llm_fallback" for e in (t.get("events") or []))
+        for t in trials
+    )
+    return hits / len(trials)
+
+
+def peak_hour_review_count(trials):
+    """Số ca cần người duyệt nhiều nhất trong bất kỳ cửa sổ trượt 60 phút nào của một ngày vận hành."""
+    if not trials:
+        return 0.0
+    by_day_seed = {}
+    for t in trials:
+        if t.get("review_kind") and t.get("arrive_min") is not None:
+            key = (t.get("day"), t.get("seed"))
+            by_day_seed.setdefault(key, []).append(float(t["arrive_min"]))
+    peak = 0
+    for mins in by_day_seed.values():
+        mins.sort()
+        left = 0
+        for right, cur in enumerate(mins):
+            while cur - mins[left] > 60.0:
+                left += 1
+            if right - left + 1 > peak:
+                peak = right - left + 1
+    return float(peak)
+
+
+def daily_auto_refund_max_vnd(trials):
+    """Tổng tiền hoàn tự động (không có approval_id) lớn nhất trong một ngày vận hành giả lập."""
+    if not trials:
+        return 0.0
+    by_day_seed = {}
+    for t in trials:
+        key = (t.get("day"), t.get("seed"))
+        amt = sum(
+            r.get("amount_vnd", 0)
+            for r in (t.get("ledger") or [])
+            if not r.get("approval_id")
+        )
+        by_day_seed[key] = by_day_seed.get(key, 0) + amt
+    return float(max(by_day_seed.values(), default=0))
+
+
 MONITORS = {
     "escalation_rate": escalation_rate,     # có sẵn; KHÔNG tính là metric mới của đội
+    "llm_fail_open_rate": llm_fail_open_rate,
+    "peak_hour_review_count": peak_hour_review_count,
+    "daily_auto_refund_max_vnd": daily_auto_refund_max_vnd,
 }
 STARTER_MONITORS = ("escalation_rate",)
